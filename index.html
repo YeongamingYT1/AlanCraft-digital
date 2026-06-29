@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alan Craft Digital — Web Developer | Konsultasi Gratis</title>
+<meta name="description" content="Alan Craft Digital — Membangun website premium berkonversi tinggi lebih cepat dari kompetitor Anda.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          charcoal: '#0D0D0D',
+          surface: '#141414',
+          surface2: '#1B1B1B',
+          neon: '#00E5FF',
+        },
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+        boxShadow: {
+          'glow-sm': '0 0 20px -4px rgba(0,229,255,0.45)',
+          'glow': '0 0 40px -8px rgba(0,229,255,0.45)',
+          'glow-lg': '0 0 70px -12px rgba(0,229,255,0.4)',
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scrollbar-color: #00E5FF #0D0D0D; }
+  ::-webkit-scrollbar { width: 9px; }
+  ::-webkit-scrollbar-track { background: #0D0D0D; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#00E5FF,#0a7a8f); border-radius: 10px; }
+
+  body { background-color: #0D0D0D; }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+  /* Scanline sweep */
+  @keyframes scan {
+    0% { transform: translateY(-120%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(620%); opacity: 0; }
+  }
+  .scanline { position: absolute; left: 0; right: 0; top: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,229,255,.85), transparent);
+    animation: scan 7s linear infinite; pointer-events: none; }
+
+  /* Floating terminal card */
+  @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+  .float { animation: floaty 6.5s ease-in-out infinite; }
+
+  /* Blinking cursor */
+  @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+  .blink-cursor { animation: blink 1s step-end infinite; }
+
+  /* Hero cursor spotlight */
+  #hero-spot {
+    background: radial-gradient(620px circle at var(--mx,50%) var(--my,20%), rgba(0,229,255,.10), transparent 65%);
+  }
+
+  /* Pulse ring for status dot */
+  @keyframes pingSlow { 75%,100% { transform: scale(2.2); opacity: 0; } }
+  .ping-slow { animation: pingSlow 2.4s cubic-bezier(0,0,.2,1) infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+    .scanline, .float, .blink-cursor, .ping-slow { animation: none !important; }
+  }
+
+  /* Portfolio filter transition */
+  .proj-card { transition: opacity .35s ease, transform .35s ease; }
+  .proj-card.is-hidden { opacity: 0; transform: scale(.94); position: absolute; pointer-events: none; visibility: hidden; }
+
+  /* =========================================================
+     HOVER IMAGE SLIDER — pure CSS, no JS (ringan & cepat)
+     Setiap kartu punya 4 foto berjejer horizontal di dalam
+     .slider-track. Saat normal, transform: translateX(0%)
+     menampilkan foto pertama (cover). Saat kartu di-hover,
+     keyframe "slideShowcase" menggeser track ke kiri secara
+     bertahap untuk menampilkan foto ke-2, ke-3, ke-4, lalu
+     kembali ke cover — looping otomatis selama di-hover.
+     ========================================================= */
+  .slider-viewport { position: relative; overflow: hidden; }
+  .slider-track {
+    display: flex;
+    height: 100%;
+    width: 400%;              /* 4 foto x 100% lebar viewport */
+    transition: transform .6s ease; /* transisi halus saat hover berakhir */
+    will-change: transform;
+  }
+  .slider-track img {
+    width: 25%;                /* 100% / 4 foto */
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+  }
+  @keyframes slideShowcase {
+    0%, 14%  { transform: translateX(0%); }    /* Foto 1 - Cover   */
+    25%, 39% { transform: translateX(-25%); }  /* Foto 2           */
+    50%, 64% { transform: translateX(-50%); }  /* Foto 3           */
+    75%, 89% { transform: translateX(-75%); }  /* Foto 4           */
+    100%     { transform: translateX(0%); }    /* Balik ke Foto 1  */
+  }
+  .proj-card:hover .slider-track {
+    animation: slideShowcase 6s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proj-card:hover .slider-track { animation: none; }
+  }
+</style>
+</head>
+
+<body class="font-sans text-white antialiased selection:bg-neon selection:text-black overflow-x-hidden">
+
+<!-- ============ NAVBAR ============ -->
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-charcoal/70 border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-2 font-extrabold tracking-tight text-lg">
+      <span class="w-2.5 h-2.5 rounded-full bg-neon shadow-glow-sm"></span>
+      ALAN CRAFT <span class="text-neon">DIGITAL</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-10 font-mono text-xs uppercase tracking-widest text-white/60">
+      <a href="#capabilities" class="hover:text-neon transition-colors">Kapabilitas</a>
+      <a href="#portfolio" class="hover:text-neon transition-colors">Portfolio</a>
+      <a href="#contact" class="hover:text-neon transition-colors">Kontak</a>
+    </nav>
+
+    <a href="#contact" class="hidden md:inline-flex items-center gap-2 rounded-full bg-neon text-black text-sm font-semibold px-5 py-2.5 hover:shadow-glow transition-shadow duration-300">
+      Konsultasi Gratis
+    </a>
+
+    <button id="menu-btn" aria-label="Buka menu" class="md:hidden text-white/80 hover:text-neon">
+      <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+      <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-charcoal/95 px-6 py-6 flex flex-col gap-5 font-mono text-sm uppercase tracking-widest text-white/70">
+    <a href="#capabilities" class="hover:text-neon">Kapabilitas</a>
+    <a href="#portfolio" class="hover:text-neon">Portfolio</a>
+    <a href="#contact" class="hover:text-neon">Kontak</a>
+    <a href="#contact" class="mt-1 inline-flex justify-center items-center gap-2 rounded-full bg-neon text-black font-semibold px-5 py-3 normal-case tracking-normal font-sans">Konsultasi Gratis</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="home" class="relative min-h-screen flex items-center pt-28 pb-20 md:pt-32 overflow-hidden">
+  <!-- background layers -->
+  <div class="absolute inset-0 bg-grid opacity-60" style="-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 10%, black, transparent); mask-image:radial-gradient(ellipse 70% 60% at 50% 10%, black, transparent);"></div>
+  <div id="hero-spot" class="absolute inset-0"></div>
+  <div class="absolute inset-0 scanline"></div>
+  <div class="absolute -top-40 -right-40 w-[36rem] h-[36rem] bg-neon/10 blur-[120px] rounded-full"></div>
+  <div class="absolute -bottom-40 -left-40 w-[28rem] h-[28rem] bg-neon/5 blur-[120px] rounded-full"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 gap-16 items-center w-full">
+
+    <div>
+      <div class="reveal inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-widest text-neon/90 border border-neon/25 rounded-full px-4 py-2 bg-neon/5">
+        <span class="relative flex h-2 w-2">
+          <span class="ping-slow absolute h-full w-full rounded-full bg-neon/70"></span>
+          <span class="relative rounded-full h-2 w-2 bg-neon"></span>
+        </span>
+        Tersedia untuk Proyek Baru
+      </div>
+
+      <h1 class="reveal mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-[3.6rem] font-extrabold leading-[1.08] tracking-tight">
+        Membangun Website Premium
+        <span class="block text-neon">Lebih Cepat</span>
+        dari Kompetitor Anda.
+      </h1>
+
+      <p class="reveal mt-6 text-base md:text-lg text-white/55 leading-relaxed max-w-xl">
+        Saya adalah <span class="text-white/80">Web Developer dan SEO</span> yang berfokus menciptakan landing page estetik berkonversi tinggi dalam hitungan jam, bukan minggu. Membantu UMKM dan Korporat meningkatkan omzet digital secara instan.
+      </p>
+
+      <div class="reveal mt-9 flex flex-col sm:flex-row gap-4">
+        <a href="#contact" class="group inline-flex items-center justify-center gap-2 rounded-full bg-neon text-black font-semibold px-7 py-4 shadow-glow hover:shadow-glow-lg hover:-translate-y-0.5 transition-all duration-300">
+          Konsultasi Proyek (Gratis)
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#portfolio" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 text-white/80 font-semibold px-7 py-4 hover:border-neon/50 hover:text-neon transition-colors duration-300">
+          Lihat Katalog Karya
+        </a>
+      </div>
+
+      <div class="reveal mt-12 flex items-center gap-5 sm:gap-8 font-mono text-xs text-white/45">
+        <div>
+          <p class="text-xl text-white font-bold">+48<span class="text-neon">JAM</span></p>
+          <p class="uppercase tracking-widest mt-0.5">Waktu Eksekusi</p>
+        </div>
+        <span class="w-px h-9 bg-white/10"></span>
+        <div>
+          <p class="text-xl text-white font-bold">5<span class="text-neon">+</span></p>
+          <p class="uppercase tracking-widest mt-0.5">Proyek Premium</p>
+        </div>
+        <span class="w-px h-9 bg-white/10"></span>
+        <div>
+          <p class="text-xl text-white font-bold">SEO<span class="text-neon">+</span>Dev</p>
+          <p class="uppercase tracking-widest mt-0.5">Jasa Tersedia</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- floating terminal mock -->
+    <div class="reveal relative hidden lg:flex justify-center items-center">
+      <div class="float w-full max-w-md rounded-2xl border border-white/10 bg-surface/80 backdrop-blur-xl shadow-glow-lg p-6 font-mono text-[13px] leading-relaxed">
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+          <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
+          <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+          <span class="ml-2 text-[11px] text-white/35">peluncuran_proyek.js</span>
+        </div>
+        <p class="text-white/70"><span class="text-neon">const</span> proyek = <span class="text-white">"LandingPagePremium"</span>;</p>
+        <p class="text-white/70 mt-1.5"><span class="text-neon">deploy</span>(proyek, &#123;</p>
+        <p class="text-white/50 ml-4">durasi: <span class="text-amber-300">"+48 jam"</span>,</p>
+        <p class="text-white/50 ml-4">fokus: <span class="text-amber-300">"konversi"</span></p>
+        <p class="text-white/70">&#125;);</p>
+        <p class="text-white/30 mt-2">// menyimpan respon ke Google Sheets...</p>
+        <p class="mt-2 text-green-400">&#10003; Build berhasil <span class="inline-block w-2 h-3.5 bg-neon ml-1 blink-cursor"></span></p>
+      </div>
+      <div class="absolute -bottom-6 -left-6 rounded-xl border border-neon/20 bg-surface/90 px-4 py-3 font-mono text-[11px] text-neon shadow-glow-sm">
+        STATUS: <span class="text-white">ONLINE</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ CAPABILITIES ============ -->
+<section id="capabilities" class="relative py-24 md:py-32 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="reveal max-w-2xl">
+      <p class="font-mono text-xs uppercase tracking-widest text-neon/80">// Kapabilitas</p>
+      <h2 class="mt-3 text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
+        Akselerator Nilai untuk Pertumbuhan Digital Anda
+      </h2>
+      <p class="mt-4 text-white/50 leading-relaxed">
+        Tiga keunggulan inti yang memastikan website Anda bukan hanya tampil mewah, tapi juga bekerja keras menghasilkan pelanggan.
+      </p>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-3 gap-6 md:gap-8">
+
+      <!-- Card 1 -->
+      <div class="reveal group relative rounded-2xl border border-white/10 bg-surface p-8 hover:border-neon/30 hover:-translate-y-1 transition-all duration-500">
+        <span class="absolute -top-px -left-px w-4 h-4 border-t border-l border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -top-px -right-px w-4 h-4 border-t border-r border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -bottom-px -left-px w-4 h-4 border-b border-l border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -bottom-px -right-px w-4 h-4 border-b border-r border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+
+        <div class="w-12 h-12 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center text-neon mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+        </div>
+        <p class="font-mono text-[11px] uppercase tracking-widest text-neon/70 mb-2">[Speed]</p>
+        <h3 class="text-xl font-bold mb-3">Eksekusi Kilat &lt; 24 Jam</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Bayaran lebih untuk peluncuran website super cepat demi mengejar momentum bisnis Anda.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="reveal group relative rounded-2xl border border-white/10 bg-surface p-8 hover:border-neon/30 hover:-translate-y-1 transition-all duration-500" style="transition-delay:.08s">
+        <span class="absolute -top-px -left-px w-4 h-4 border-t border-l border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -top-px -right-px w-4 h-4 border-t border-r border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -bottom-px -left-px w-4 h-4 border-b border-l border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -bottom-px -right-px w-4 h-4 border-b border-r border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+
+        <div class="w-12 h-12 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center text-neon mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="font-mono text-[11px] uppercase tracking-widest text-neon/70 mb-2">[Conversion]</p>
+        <h3 class="text-xl font-bold mb-3">Copywriting Kelas Agensi</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Setiap teks disusun menggunakan psikologi konsumen untuk mengubah pengunjung menjadi pembeli aktif.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="reveal group relative rounded-2xl border border-white/10 bg-surface p-8 hover:border-neon/30 hover:-translate-y-1 transition-all duration-500" style="transition-delay:.16s">
+        <span class="absolute -top-px -left-px w-4 h-4 border-t border-l border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -top-px -right-px w-4 h-4 border-t border-r border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -bottom-px -left-px w-4 h-4 border-b border-l border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+        <span class="absolute -bottom-px -right-px w-4 h-4 border-b border-r border-neon/30 group-hover:border-neon transition-colors duration-300"></span>
+
+        <div class="w-12 h-12 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center text-neon mb-6">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="8" ry="3"/><path stroke-linecap="round" d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+        </div>
+        <p class="font-mono text-[11px] uppercase tracking-widest text-neon/70 mb-2">[Automation]</p>
+        <h3 class="text-xl font-bold mb-3">Otomatisasi Data &amp; Sistem</h3>
+        <p class="text-sm text-white/50 leading-relaxed">Integrasi formulir langsung ke WhatsApp atau otomatis tersimpan ke database Google Sheets tim Anda.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTFOLIO ============ -->
+<section id="portfolio" class="relative py-24 md:py-32 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 md:px-10">
+    <div class="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+      <div class="max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-neon/80">// Portfolio</p>
+        <h2 class="mt-3 text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">Showcase Karya Pilihan</h2>
+        <p class="mt-4 text-white/50 leading-relaxed">Lima proyek yang merepresentasikan hasil produk digital premium.</p>
+      </div>
+
+      <!-- filter tabs -->
+      <div class="flex flex-wrap gap-2 font-mono text-xs uppercase tracking-widest" id="filter-tabs">
+        <button data-filter="all" class="filter-btn active px-4 py-2 rounded-full border border-neon bg-neon text-black transition-colors duration-300">Semua Proyek</button>
+        <button data-filter="klien" class="filter-btn px-4 py-2 rounded-full border border-white/15 text-white/60 hover:border-neon/50 hover:text-neon transition-colors duration-300">Konseptual</button>
+        <button data-filter="konsep" class="filter-btn px-4 py-2 rounded-full border border-white/15 text-white/60 hover:border-neon/50 hover:text-neon transition-colors duration-300">Klien</button>
+      </div>
+    </div>
+
+    <div id="project-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+      <!-- Project 1 -->
+      <div class="proj-card reveal group relative rounded-2xl border border-white/10 bg-surface overflow-hidden hover:-translate-y-1.5 hover:scale-[1.02] hover:border-neon/40 hover:shadow-glow transition-all duration-500" data-category="konsep">
+        <span class="absolute top-2.5 left-2.5 z-10 w-4 h-4 border-t border-l border-neon/40 group-hover:border-neon transition-colors"></span>
+        <span class="absolute top-2.5 right-2.5 z-10 w-4 h-4 border-t border-r border-neon/40 group-hover:border-neon transition-colors"></span>
+        <div class="slider-viewport h-44 bg-surface2">
+          <!-- ============================================================
+               SLIDER GAMBAR PROYEK: Nova Wave
+               Ganti setiap src="..." di bawah dengan URL screenshot Anda
+               sendiri (disarankan 600x400px, format .webp/.jpg, dikompres).
+               Urutan gambar = urutan slide saat kartu ini di-hover.
+               ============================================================ -->
+          <div class="slider-track">
+            <!-- Foto 1 (COVER - tampil sebelum kartu di-hover) -->
+            <img src="Novawave Home.png" alt="Nova Wave - Cover">
+            <!-- Foto 2 -->
+            <img src="Novawave Home.png" alt="Nova Wave - Screenshot 2" loading="lazy">
+            <!-- Foto 3 -->
+            <img src="Novawave 1.png" alt="Nova Wave - Screenshot 3" loading="lazy">
+            <!-- Foto 4 -->
+            <img src="Novawave 2.png" alt="Nova Wave - Screenshot 4" loading="lazy">
+          </div>
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent"></div>
+          <span class="absolute bottom-3 left-3 z-20 font-mono text-[10px] text-neon/70 bg-charcoal/70 px-2 py-1 rounded">P-01</span>
+          <span class="absolute bottom-3 right-3 z-20 font-mono text-[9px] uppercase tracking-widest text-white/60 bg-charcoal/70 px-2 py-1 rounded group-hover:opacity-0 transition-opacity duration-300">Hover untuk preview</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-lg font-bold">Nova Wave</h3>
+            <a href="https://yeongamingyt1.github.io/novawave/" target="_blank" rel="noopener" aria-label="Buka proyek Nova Wave" class="text-neon/60 hover:text-neon transition-colors">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></svg>
+            </a>
+          </div>
+          <p class="font-mono text-[11px] uppercase tracking-wide text-neon/70 mb-3">E-Commerce · Student Company SMAN 24 Bandung</p>
+          <p class="text-sm text-white/50 leading-relaxed">Platform e-commerce hasil kolaborasi siswa, dirancang untuk melatih alur transaksi digital yang realistis.</p>
+          <a href="https://yeongamingyt1.github.io/novawave/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-white/60 group-hover:text-neon transition-colors">
+            Lihat Proyek
+            <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="proj-card reveal group relative rounded-2xl border border-white/10 bg-surface overflow-hidden hover:-translate-y-1.5 hover:scale-[1.02] hover:border-neon/40 hover:shadow-glow transition-all duration-500" data-category="klien" style="transition-delay:.06s">
+        <span class="absolute top-2.5 left-2.5 z-10 w-4 h-4 border-t border-l border-neon/40 group-hover:border-neon transition-colors"></span>
+        <span class="absolute top-2.5 right-2.5 z-10 w-4 h-4 border-t border-r border-neon/40 group-hover:border-neon transition-colors"></span>
+        <div class="slider-viewport h-44 bg-surface2">
+          <!-- ============================================================
+               SLIDER GAMBAR PROYEK: EZDT Gaming
+               Ganti setiap src="..." di bawah dengan URL screenshot Anda
+               sendiri (disarankan 600x400px, format .webp/.jpg, dikompres).
+               ============================================================ -->
+          <div class="slider-track">
+            <!-- Foto 1 (COVER - tampil sebelum kartu di-hover) -->
+            <img src="Ezdt Home.png" alt="EZDT Gaming - Cover">
+            <!-- Foto 2 -->
+            <img src="Ezdt 1.png" alt="EZDT Gaming - Screenshot 2" loading="lazy">
+            <!-- Foto 3 -->
+            <img src="Ezdt 2.png" alt="EZDT Gaming - Screenshot 3" loading="lazy">
+            <!-- Foto 4 -->
+            <img src="Ezdt 3.png" alt="EZDT Gaming - Screenshot 4" loading="lazy">
+          </div>
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent"></div>
+          <span class="absolute bottom-3 left-3 z-20 font-mono text-[10px] text-neon/70 bg-charcoal/70 px-2 py-1 rounded">P-02</span>
+          <span class="absolute bottom-3 right-3 z-20 font-mono text-[9px] uppercase tracking-widest text-white/60 bg-charcoal/70 px-2 py-1 rounded group-hover:opacity-0 transition-opacity duration-300">Hover untuk preview</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-lg font-bold">EZDT Gaming</h3>
+            <a href="https://yeongamingyt1.github.io/ezdt-gaming/" target="_blank" rel="noopener" aria-label="Buka proyek EZDT Gaming" class="text-neon/60 hover:text-neon transition-colors">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></svg>
+            </a>
+          </div>
+          <p class="font-mono text-[11px] uppercase tracking-wide text-neon/70 mb-3">Local Business · Dark Mode Internet Cafe</p>
+          <p class="text-sm text-white/50 leading-relaxed">Identitas dark-mode untuk warnet lokal, lengkap dengan sistem booking PC dan member yang imersif.</p>
+          <a href="https://yeongamingyt1.github.io/ezdt-gaming/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-white/60 group-hover:text-neon transition-colors">
+            Lihat Proyek
+            <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="proj-card reveal group relative rounded-2xl border border-white/10 bg-surface overflow-hidden hover:-translate-y-1.5 hover:scale-[1.02] hover:border-neon/40 hover:shadow-glow transition-all duration-500" data-category="klien" style="transition-delay:.12s">
+        <span class="absolute top-2.5 left-2.5 z-10 w-4 h-4 border-t border-l border-neon/40 group-hover:border-neon transition-colors"></span>
+        <span class="absolute top-2.5 right-2.5 z-10 w-4 h-4 border-t border-r border-neon/40 group-hover:border-neon transition-colors"></span>
+        <div class="slider-viewport h-44 bg-surface2">
+          <!-- ============================================================
+               SLIDER GAMBAR PROYEK: DietLezat Katering
+               Ganti setiap src="..." di bawah dengan URL screenshot Anda
+               sendiri (disarankan 600x400px, format .webp/.jpg, dikompres).
+               ============================================================ -->
+          <div class="slider-track">
+            <!-- Foto 1 (COVER - tampil sebelum kartu di-hover) -->
+            <img src="Dietlezat Home.png" alt="DietLezat Katering - Cover">
+            <!-- Foto 2 -->
+            <img src="Dietlezat 1.png" alt="DietLezat Katering - Screenshot 2" loading="lazy">
+            <!-- Foto 3 -->
+            <img src="Dietlezat 2.png" alt="DietLezat Katering - Screenshot 3" loading="lazy">
+            <!-- Foto 4 -->
+            <img src="Dietlezat 3.png" alt="DietLezat Katering - Screenshot 4" loading="lazy">
+          </div>
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent"></div>
+          <span class="absolute bottom-3 left-3 z-20 font-mono text-[10px] text-neon/70 bg-charcoal/70 px-2 py-1 rounded">P-03</span>
+          <span class="absolute bottom-3 right-3 z-20 font-mono text-[9px] uppercase tracking-widest text-white/60 bg-charcoal/70 px-2 py-1 rounded group-hover:opacity-0 transition-opacity duration-300">Hover untuk preview</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-lg font-bold">DietLezat Katering</h3>
+            <a href="https://yeongamingyt1.github.io/DietLezat-Katering/" target="_blank" rel="noopener" aria-label="Buka proyek DietLezat Katering" class="text-neon/60 hover:text-neon transition-colors">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></svg>
+            </a>
+          </div>
+          <p class="font-mono text-[11px] uppercase tracking-wide text-neon/70 mb-3">Landing Page · WhatsApp Order System</p>
+          <p class="text-sm text-white/50 leading-relaxed">Landing page konversi tinggi dengan pemesanan otomatis langsung ke WhatsApp admin.</p>
+          <a href="https://yeongamingyt1.github.io/DietLezat-Katering/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-white/60 group-hover:text-neon transition-colors">
+            Lihat Proyek
+            <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="proj-card reveal group relative rounded-2xl border border-white/10 bg-surface overflow-hidden hover:-translate-y-1.5 hover:scale-[1.02] hover:border-neon/40 hover:shadow-glow transition-all duration-500" data-category="klien" style="transition-delay:.18s">
+        <span class="absolute top-2.5 left-2.5 z-10 w-4 h-4 border-t border-l border-neon/40 group-hover:border-neon transition-colors"></span>
+        <span class="absolute top-2.5 right-2.5 z-10 w-4 h-4 border-t border-r border-neon/40 group-hover:border-neon transition-colors"></span>
+        <div class="slider-viewport h-44 bg-surface2">
+          <!-- ============================================================
+               SLIDER GAMBAR PROYEK: The Peak Residence
+               Ganti setiap src="..." di bawah dengan URL screenshot Anda
+               sendiri (disarankan 600x400px, format .webp/.jpg, dikompres).
+               ============================================================ -->
+          <div class="slider-track">
+            <!-- Foto 1 (COVER - tampil sebelum kartu di-hover) -->
+            <img src="ThePeakResidence Home.png" alt="The Peak Residence - Cover">
+            <!-- Foto 2 -->
+            <img src="ThePeakResidence 1.png" alt="The Peak Residence - Screenshot 2" loading="lazy">
+            <!-- Foto 3 -->
+            <img src="ThePeakResidence 2.png" alt="The Peak Residence - Screenshot 3" loading="lazy">
+            <!-- Foto 4 -->
+            <img src="ThePeakResidence 3.png" alt="The Peak Residence - Screenshot 4" loading="lazy">
+          </div>
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent"></div>
+          <span class="absolute bottom-3 left-3 z-20 font-mono text-[10px] text-neon/70 bg-charcoal/70 px-2 py-1 rounded">P-04</span>
+          <span class="absolute bottom-3 right-3 z-20 font-mono text-[9px] uppercase tracking-widest text-white/60 bg-charcoal/70 px-2 py-1 rounded group-hover:opacity-0 transition-opacity duration-300">Hover untuk preview</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-lg font-bold">The Peak Residence</h3>
+            <a href="https://yeongamingyt1.github.io/thepeakresidence/" target="_blank" rel="noopener" aria-label="Buka proyek The Peak Residence" class="text-neon/60 hover:text-neon transition-colors">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></svg>
+            </a>
+          </div>
+          <p class="font-mono text-[11px] uppercase tracking-wide text-neon/70 mb-3">Corporate · Luxury Real Estate + Google Sheets Automation</p>
+          <p class="text-sm text-white/50 leading-relaxed">Microsite properti mewah dengan formulir minat yang otomatis tersimpan ke Google Sheets tim sales.</p>
+          <a href="https://yeongamingyt1.github.io/thepeakresidence/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-white/60 group-hover:text-neon transition-colors">
+            Lihat Proyek
+            <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="proj-card reveal group relative rounded-2xl border border-white/10 bg-surface overflow-hidden hover:-translate-y-1.5 hover:scale-[1.02] hover:border-neon/40 hover:shadow-glow transition-all duration-500" data-category="klien" style="transition-delay:.24s">
+        <span class="absolute top-2.5 left-2.5 z-10 w-4 h-4 border-t border-l border-neon/40 group-hover:border-neon transition-colors"></span>
+        <span class="absolute top-2.5 right-2.5 z-10 w-4 h-4 border-t border-r border-neon/40 group-hover:border-neon transition-colors"></span>
+        <div class="slider-viewport h-44 bg-surface2">
+          <!-- ============================================================
+               SLIDER GAMBAR PROYEK: SleepGlow Studio
+               Ganti setiap src="..." di bawah dengan URL screenshot Anda
+               sendiri (disarankan 600x400px, format .webp/.jpg, dikompres).
+               ============================================================ -->
+          <div class="slider-track">
+            <!-- Foto 1 (COVER - tampil sebelum kartu di-hover) -->
+            <img src="SleepGlow Home.png" alt="SleepGlow Studio - Cover">
+            <!-- Foto 2 -->
+            <img src="https://placehold.co/600x400/141414/00E5FF?text=Screenshot+2" alt="SleepGlow Studio - Screenshot 2" loading="lazy">
+            <!-- Foto 3 -->
+            <img src="https://placehold.co/600x400/1B1B1B/00E5FF?text=Screenshot+3" alt="SleepGlow Studio - Screenshot 3" loading="lazy">
+            <!-- Foto 4 -->
+            <img src="https://placehold.co/600x400/0D0D0D/00E5FF?text=Screenshot+4" alt="SleepGlow Studio - Screenshot 4" loading="lazy">
+          </div>
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent"></div>
+          <span class="absolute bottom-3 left-3 z-20 font-mono text-[10px] text-neon/70 bg-charcoal/70 px-2 py-1 rounded">P-05</span>
+          <span class="absolute bottom-3 right-3 z-20 font-mono text-[9px] uppercase tracking-widest text-white/60 bg-charcoal/70 px-2 py-1 rounded group-hover:opacity-0 transition-opacity duration-300">Hover untuk preview</span>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-lg font-bold">SleepGlow Studio</h3>
+            <a href="https://yeongamingyt1.github.io/SleepGlowStudio/" target="_blank" rel="noopener" aria-label="Buka proyek SleepGlow Studio" class="text-neon/60 hover:text-neon transition-colors">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></svg>
+            </a>
+          </div>
+          <p class="font-mono text-[11px] uppercase tracking-wide text-neon/70 mb-3">Premium Retail · Aesthetic Bedding + Visual Charts</p>
+          <p class="text-sm text-white/50 leading-relaxed">Etalase retail estetik dengan visual chart interaktif untuk membandingkan kualitas produk bedding.</p>
+          <a href="https://yeongamingyt1.github.io/SleepGlowStudio/" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-white/60 group-hover:text-neon transition-colors">
+            Lihat Proyek
+            <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <p id="empty-state" class="hidden text-center text-white/40 font-mono text-sm mt-16">// tidak ada proyek pada kategori ini</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER / CONTACT ============ -->
+<footer id="contact" class="relative py-24 md:py-32 border-t border-white/5 overflow-hidden">
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-[20rem] bg-neon/10 blur-[140px] rounded-full"></div>
+
+  <div class="relative max-w-5xl mx-auto px-6 md:px-10">
+    <div class="reveal relative rounded-3xl border border-white/10 bg-gradient-to-br from-surface to-surface2 p-10 md:p-16 text-center overflow-hidden">
+      <span class="absolute top-3 left-3 w-5 h-5 border-t border-l border-neon/40"></span>
+      <span class="absolute top-3 right-3 w-5 h-5 border-t border-r border-neon/40"></span>
+      <span class="absolute bottom-3 left-3 w-5 h-5 border-b border-l border-neon/40"></span>
+      <span class="absolute bottom-3 right-3 w-5 h-5 border-b border-r border-neon/40"></span>
+
+      <p class="font-mono text-xs uppercase tracking-widest text-neon/80">// Mulai Proyek Anda</p>
+      <h2 class="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
+        Siap Membangun Platform <br class="hidden sm:block"> Digital Anda?
+      </h2>
+      <p class="mt-5 text-white/55 max-w-xl mx-auto leading-relaxed">
+        Diskusikan visi bisnis Anda — dari konsep hingga website premium yang siap meningkatkan Branding, dikerjakan dengan kecepatan dan hasil deal.
+      </p>
+
+      <a href="https://wa.me/6283179322038?text=Halo%20Alan%2C%20saya%20tertarik%20untuk%20konsultasi%20pembuatan%20website%20premium." target="_blank" rel="noopener"
+         class="mt-9 inline-flex items-center justify-center gap-2.5 rounded-full bg-neon text-black font-semibold px-8 py-4 shadow-glow hover:shadow-glow-lg hover:-translate-y-0.5 transition-all duration-300">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-1.4-.6-2.5-1.4-3.4-2.8-.1-.2-.1-.4.1-.5.2-.2.5-.5.6-.7.2-.2.1-.4 0-.6-.1-.2-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.1 0 1.2.9 2.4 1 2.6.1.1 1.7 2.7 4.2 3.7 2 .8 2.4.6 2.8.6.4 0 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z"/><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.5A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 1 1-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+        Hubungi via WhatsApp
+      </a>
+    </div>
+
+    <div class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/35 font-mono">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-neon"></span>
+        ALAN CRAFT DIGITAL
+      </div>
+      <p class="text-center sm:text-right">© 2026 Alan Craft Digital. Empowered by Alan</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+  menuBtn.addEventListener('click', () => {
+    const isHidden = mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+    iconOpen.classList.toggle('hidden', isHidden);
+    iconClose.classList.toggle('hidden', !isHidden);
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+    iconOpen.classList.remove('hidden');
+    iconClose.classList.add('hidden');
+  }));
+
+  // Scroll reveal via IntersectionObserver
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Hero cursor spotlight (skip on touch devices)
+  const heroSpot = document.getElementById('hero-spot');
+  const heroSection = document.getElementById('home');
+  if (window.matchMedia('(hover: hover)').matches) {
+    heroSection.addEventListener('mousemove', (e) => {
+      const rect = heroSection.getBoundingClientRect();
+      heroSpot.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+      heroSpot.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+    });
+  }
+
+  // Portfolio filter system
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.proj-card');
+  const emptyState = document.getElementById('empty-state');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('active', 'bg-neon', 'text-black', 'border-neon');
+        b.classList.add('border-white/15', 'text-white/60');
+      });
+      btn.classList.add('active', 'bg-neon', 'text-black', 'border-neon');
+      btn.classList.remove('border-white/15', 'text-white/60');
+
+      const filter = btn.dataset.filter;
+      let visibleCount = 0;
+
+      projectCards.forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        if (match) {
+          card.classList.remove('is-hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('is-hidden');
+        }
+      });
+
+      emptyState.classList.toggle('hidden', visibleCount !== 0);
+    });
+  });
+</script>
+
+</body>
+</html>
